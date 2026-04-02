@@ -44,4 +44,15 @@ public class PaymentService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Payment not found with id " + id));
     }
+
+    @Transactional
+    public PaymentDto confirmPayment(Long id) {
+        PaymentEntity payment = findPaymentOrThrow(id);
+        if (!payment.getStatus().equals(PaymentStatus.NEW)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong payment status");
+        }
+        payment.setStatus(PaymentStatus.SUCCEEDED);
+        PaymentEntity savedPayment = paymentRepository.save(payment);
+        return mapper.convertEntityToDto(savedPayment);
+    }
 }
