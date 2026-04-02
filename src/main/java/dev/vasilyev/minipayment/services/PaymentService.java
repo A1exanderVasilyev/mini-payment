@@ -6,8 +6,10 @@ import dev.vasilyev.minipayment.domain.PaymentEntity;
 import dev.vasilyev.minipayment.domain.PaymentEntityMapper;
 import dev.vasilyev.minipayment.domain.PaymentStatus;
 import dev.vasilyev.minipayment.repositories.PaymentRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class PaymentService {
@@ -30,5 +32,16 @@ public class PaymentService {
 
         PaymentEntity savedPayment = paymentRepository.save(paymentEntity);
         return mapper.convertEntityToDto(savedPayment);
+    }
+
+    public PaymentDto getPayment(Long id) {
+        PaymentEntity payment = findPaymentOrThrow(id);
+        return mapper.convertEntityToDto(payment);
+    }
+
+    private PaymentEntity findPaymentOrThrow(Long id) {
+        return paymentRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Payment not found with id " + id));
     }
 }
