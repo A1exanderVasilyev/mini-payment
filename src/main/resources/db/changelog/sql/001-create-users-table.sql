@@ -1,6 +1,6 @@
 -- liquibase formatted sql
 
--- changeset al_vasilyev:3
+-- changeset al_vasilyev:1
 CREATE TABLE IF NOT EXISTS users
 (
     id    BIGSERIAL PRIMARY KEY,
