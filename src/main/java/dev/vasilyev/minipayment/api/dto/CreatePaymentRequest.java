@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Positive;
 import java.math.BigDecimal;
 
 public record CreatePaymentRequest(
-        @NotNull Long userId,
+        @NotNull @Positive Long userId,
         @NotNull @Positive BigDecimal amount
 ) {
 }
