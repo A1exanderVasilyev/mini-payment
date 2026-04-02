@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - include:
+      author: al_vasilyev
+      file: db/changelog/sql/001-create-users-table.sql
+
+  - include:
+      author: al_vasilyev
+      file: db/changelog/sql/002-create-payments-table.sql
+
+  - include:
+      author: al_vasilyev
+      file: db/changelog/sql/003-add-foreign-key.sql
+

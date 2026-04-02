@@ -1,0 +1,25 @@
+spring:
+  application:
+    name:
+      mini-payment
+
+server:
+  port: 8080
+
+devtools:
+  restart:
+    enabled: true
+
+datasource:
+  url: jdbc:postgresql://localhost:5432/payments
+  username: postgres
+  password: postgres
+
+liquibase:
+  change-log: classpath:db/changelog/changelog-master.yaml
+
+jpa:
+  hibernate:
+    ddl-auto: validate
+  open-in-view: false
+  show-sql: true
