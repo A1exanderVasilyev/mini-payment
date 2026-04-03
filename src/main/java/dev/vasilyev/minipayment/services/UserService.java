@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -29,6 +31,20 @@ public class UserService {
         UserEntity savedUser = userRepository.save(userEntity);
 
         return convertToDto(savedUser);
+    }
+
+    @Transactional(readOnly = true)
+    public UserDto getUserOrThrow(Long id) {
+        UserEntity user = userRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found: " + id));
+        return convertToDto(user);
+    }
+
+    @Transactional(readOnly = true)
+    public List<UserDto> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(this::convertToDto)
+                .toList();
     }
 
 

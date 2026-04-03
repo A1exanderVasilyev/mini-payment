@@ -5,7 +5,9 @@ import dev.vasilyev.minipayment.api.dto.PaymentDto;
 import dev.vasilyev.minipayment.domain.PaymentEntity;
 import dev.vasilyev.minipayment.domain.PaymentEntityMapper;
 import dev.vasilyev.minipayment.domain.PaymentStatus;
+import dev.vasilyev.minipayment.domain.UserEntity;
 import dev.vasilyev.minipayment.repositories.PaymentRepository;
+import dev.vasilyev.minipayment.repositories.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,17 +17,21 @@ import org.springframework.web.server.ResponseStatusException;
 public class PaymentService {
 
     private final PaymentRepository paymentRepository;
+    private final UserRepository userRepository;
     private final PaymentEntityMapper mapper;
 
-    public PaymentService(PaymentRepository paymentRepository, PaymentEntityMapper mapper) {
+    public PaymentService(PaymentRepository paymentRepository, UserRepository userRepository, PaymentEntityMapper mapper) {
         this.paymentRepository = paymentRepository;
+        this.userRepository = userRepository;
         this.mapper = mapper;
     }
 
     @Transactional
     public PaymentDto createPayment(CreatePaymentRequest request) {
+        UserEntity user = userRepository.findById(request.userId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found: " + request.userId()));
         PaymentEntity paymentEntity = PaymentEntity.builder()
-                .userId(request.userId())
+                .user(user)
                 .amount(request.amount())
                 .status(PaymentStatus.NEW)
                 .build();

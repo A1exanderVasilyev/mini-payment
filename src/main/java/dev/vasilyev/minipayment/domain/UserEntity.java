@@ -11,6 +11,12 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "users")
 @Entity
+@NamedEntityGraph(
+        name = "User.withPayments",
+        attributeNodes = {
+                @NamedAttributeNode(value = "payments")
+        }
+)
 public class UserEntity {
 
     @Id
@@ -20,8 +26,7 @@ public class UserEntity {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<PaymentEntity> payments = new ArrayList<>();
 
     public UserEntity(String email) {

@@ -11,7 +11,7 @@ public class PaymentEntityMapper {
     public PaymentDto convertEntityToDto(PaymentEntity paymentEntity) {
         return new PaymentDto(
                 paymentEntity.getId(),
-                paymentEntity.getUserId(),
+                paymentEntity.getUser().getId(),
                 paymentEntity.getAmount(),
                 paymentEntity.getStatus(),
                 paymentEntity.getCreatedAt(),
