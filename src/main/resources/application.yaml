@@ -25,9 +25,3 @@ spring:
     change-log: classpath:db/changelog/changelog-master.yaml
     drop-first: false
     default-schema: public
-
-logging:
-  level:
-    liquibase: DEBUG
-    org.springframework.boot: DEBUG
-    org.springframework.context: DEBUG
