@@ -25,3 +25,15 @@ spring:
     change-log: classpath:db/changelog/changelog-master.yaml
     drop-first: false
     default-schema: public
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  cache:
+    type: redis
+
+app:
+  cache:
+    payments-ttl: 60s
+    users-ttl: 60s

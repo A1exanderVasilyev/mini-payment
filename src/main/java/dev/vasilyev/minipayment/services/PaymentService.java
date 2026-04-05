@@ -8,6 +8,8 @@ import dev.vasilyev.minipayment.domain.PaymentStatus;
 import dev.vasilyev.minipayment.domain.UserEntity;
 import dev.vasilyev.minipayment.repositories.PaymentRepository;
 import dev.vasilyev.minipayment.repositories.UserRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +42,7 @@ public class PaymentService {
         return mapper.convertEntityToDto(savedPayment);
     }
 
+    @Cacheable(cacheNames = "payments", key = "#id")
     public PaymentDto getPayment(Long id) {
         PaymentEntity payment = findPaymentOrThrow(id);
         return mapper.convertEntityToDto(payment);
@@ -52,6 +55,7 @@ public class PaymentService {
     }
 
     @Transactional
+    @CacheEvict(cacheNames = "payments", key = "#id")
     public PaymentDto confirmPayment(Long id) {
         PaymentEntity payment = findPaymentOrThrow(id);
         if (!payment.getStatus().equals(PaymentStatus.NEW)) {

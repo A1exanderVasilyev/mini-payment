@@ -5,6 +5,8 @@ import dev.vasilyev.minipayment.api.dto.UserDto;
 import dev.vasilyev.minipayment.domain.PaymentEntityMapper;
 import dev.vasilyev.minipayment.domain.UserEntity;
 import dev.vasilyev.minipayment.repositories.UserRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +36,7 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "users", key = "#id")
     public UserDto getUserOrThrow(Long id) {
         UserEntity user = userRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found: " + id));
