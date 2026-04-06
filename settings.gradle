@@ -1,1 +1,4 @@
 rootProject.name = 'mini-payment'
+
+include 'core'
+include 'audit'
